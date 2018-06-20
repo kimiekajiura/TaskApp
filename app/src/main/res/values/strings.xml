@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">TaskApp</string>
+
+    <string-array name="list">
+    <item>打合せ</item>
+    <item>自社業務</item>
+    <item>取引先業務</item>
+    <item>その他</item>
+</string-array>
+
+    <string name="action_settings">Settings</string>
+</resources>
