@@ -5,39 +5,46 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.TextView;
+import android.widget.Button;
+import android.view.View.OnClickListener;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-public class TaskAdapter extends BaseAdapter{
+
+public class TaskAdapter extends BaseAdapter {
+
     private LayoutInflater mLayoutInflater = null;
     private List<Task> mTaskList;
 
-    public  TaskAdapter(Context context) {
-        mLayoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-    }
+    public TaskAdapter(Context context) {
+            mLayoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        }
 
-    public void setTaskList(List<Task> taskList){
-        mTaskList = taskList;
-    }
+        public void setTaskList (List < Task > taskList) {
+            mTaskList = taskList;
+        }
 
-    @Override
-    public int getCount() {
-        return mTaskList.size();
-    }
+        @Override
+        public int getCount () {
+            return mTaskList.size();
+        }
 
-    @Override
-    public Object getItem(int position) {
-        return mTaskList.get(position);
-    }
+        @Override
+        public Object getItem ( int position){
+            return mTaskList.get(position);
+        }
 
-    @Override
-    public long getItemId(int position) {
-        return mTaskList.get(position).getId();
-    }
+        @Override
+        public long getItemId ( int position){
+            return mTaskList.get(position).getId();
+        }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
@@ -48,13 +55,13 @@ public class TaskAdapter extends BaseAdapter{
         TextView textView1 = (TextView) convertView.findViewById(android.R.id.text1);
         TextView textView2 = (TextView) convertView.findViewById(android.R.id.text2);
 
-        textView1.setText(("[Title]" + mTaskList.get(position).getTitle()) + "   " + "[Category]" + mTaskList.get(position).getCategory());
+        textView1.setText(("Title：" + mTaskList.get(position).getTitle()) + "   " + "Category：" + mTaskList.get(position).getCategory());
 
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.JAPANESE);
         Date date = mTaskList.get(position).getDate();
         textView2.setText(simpleDateFormat.format(date));
 
-
         return convertView;
     }
+
 }

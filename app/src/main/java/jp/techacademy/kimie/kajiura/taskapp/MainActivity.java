@@ -10,7 +10,10 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Spinner;
 
 import io.realm.Realm;
 import io.realm.RealmChangeListener;
@@ -38,6 +41,22 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        Button button = (Button) findViewById(R.id.sortButton);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                EditText editText = (EditText) findViewById(R.id.category_text);
+                String item = editText.getText().toString();
+                if (item.equals("")){
+                    reloadListView();
+                }else{
+                    RealmResults<Task> taskRealmResults = mRealm.where(Task.class)
+                            .equalTo("category",item).findAll();
+                    updatelistview(taskRealmResults);
+                }
+            }
+        });
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -121,6 +140,11 @@ public class MainActivity extends AppCompatActivity {
     private void reloadListView() {
         //RealmDBから「全てのデータを取得して新しい日時順にならべた結果」を取得
         RealmResults<Task> taskRealmResults = mRealm.where(Task.class).findAll().sort("date", Sort.DESCENDING);
+        updatelistview(taskRealmResults);
+
+    }
+
+    private void updatelistview(RealmResults<Task> taskRealmResults) {
         //上記の結果をtoastとしてセット
         mTaskAdapter.setTaskList(mRealm.copyFromRealm(taskRealmResults));
         //taskのListView用のアダプタに渡す

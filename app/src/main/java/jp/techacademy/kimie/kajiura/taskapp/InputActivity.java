@@ -15,6 +15,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TimePicker;
 
+
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -30,8 +31,7 @@ public class InputActivity extends AppCompatActivity {
     //Button：日付と時間を設定
     private Button mDateButton, mTimeButton;
     //EditText：タイトルを入力と、内容を入力するTextTextの保持をする
-    private EditText mTitleEdit, mContentEdit;
-    private Spinner mCategorySpinner;
+    private EditText mTitleEdit, mContentEdit,mCategoryEdit;
     //Taskクラスのオブジェクト
     private Task mTask;
 
@@ -104,7 +104,7 @@ public class InputActivity extends AppCompatActivity {
         findViewById(R.id.done_button).setOnClickListener(mOnDoneClickListener);
         mTitleEdit = (EditText)findViewById(R.id.title_edit_text);
         mContentEdit = (EditText)findViewById(R.id.content_edit_text);
-        mCategorySpinner = (Spinner)findViewById(R.id.category_sppiner_text);
+        mCategoryEdit = (EditText)findViewById(R.id.category_edit_text);
 
         Intent intent = getIntent();
         //intent.getIntExtra(MainActivity.EXTRA_TASK, -1);：EXTRA_TASK から　Task のidを取得して、id からTaskのインスタンスを取得
@@ -125,7 +125,7 @@ public class InputActivity extends AppCompatActivity {
         } else {
             mTitleEdit.setText(mTask.getTitle());
             mContentEdit.setText(mTask.getContents());
-            //mCategorySpinner.set(mTask.getCategory());
+            mCategoryEdit.setText(mTask.getCategory());
 
             Calendar calendar = Calendar.getInstance();
             calendar.setTime(mTask.getDate());
@@ -155,7 +155,7 @@ public class InputActivity extends AppCompatActivity {
             RealmResults<Task> taskRealmResults = realm.where(Task.class).findAll();
 
             int identifier;
-            if (taskRealmResults == null) {
+            if (taskRealmResults.max("id") != null) {
                 identifier = taskRealmResults.max("id").intValue() + 1;
             }else{
                 identifier = 0;
@@ -165,7 +165,7 @@ public class InputActivity extends AppCompatActivity {
 
         String title = mTitleEdit.getText().toString();
         String content  = mContentEdit.getText().toString();
-        String category = mCategorySpinner.getSelectedItem().toString();
+        String category = mCategoryEdit.getText().toString();
 
         mTask.setTitle(title);
         mTask.setContents(content);
